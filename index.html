@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link
+      rel="stylesheet"
+      href="bootstrap-5.3.0-alpha3-dist/css/bootstrap.css"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body class="bg-dark">
+    <div class="container-fluid all-container">
+      <div class="notepad container bg-light hide">
+        <div
+          class="control-space pt-3 d-flex justify-content-between align-items-center"
+        >
+          <div class="d-flex align-items-center">
+            <div class="back-btn">
+              <button class="btn btn-dark back-button p-2">back</button>
+            </div>
+            <p class="h4 p-2">Notes</p>
+          </div>
+          <div>
+            <button class="btn btn-dark save-btn">save</button>
+          </div>
+        </div>
+        <textarea
+          type="text"
+          placeholder="Title"
+          class="search-field-write-mode-h1"
+          id="search-field-h1"
+          autocomplete="off"
+        ></textarea>
+        <hr />
+        <textarea
+          type="text"
+          placeholder="Note something down"
+          class="search-field-write-mode-p"
+          rows="30"
+          id="search-field-p"
+          autocomplete="off"
+        ></textarea>
+      </div>
+      <p class="h1">Notes</p>
+      <div class="container d-flex justify-content-center mt-3">
+        <input
+          type="text"
+          placeholder="Search notes"
+          class="search-field"
+          id="search-field"
+          autocomplete="off"
+        />
+      </div>
+      <div class="notes-sec row mt-4 g-3">
+        <!-- <div class="note-box col-xl-3 col-lg-3 col-md-3">
+          <div class="note p-2">
+            <p class="h2">Title</p>
+            <p class="h6">Lorem ipsum dolor sit, amet consectetur...</p>
+            <p>12:18, July 2, 2023</p>
+          </div>
+        </div> -->
+      </div>
+      <div class="empty-info hide">
+        <p class="h5 text-dark">No Notes To Show</p>
+      </div>
+      <div
+        class="add-btn d-flex justify-content-center align-items-center bg-dark"
+      >
+        +
+      </div>
+    </div>
+
+    <div class="tab-options d-flex justify-content-evenly align-items-center">
+      <div class="notes-tab">
+        <a href="#" class="link-dark link-underline-opacity-0">Notes</a>
+      </div>
+      <div class="todo-tab">
+        <a href="#" class="link-dark link-underline-opacity-0">To-dos</a>
+      </div>
+    </div>
+    <script src="main.js" type="module"></script>
+    <script src="bootstrap-5.3.0-alpha3-dist/js/bootstrap.bundle.js"></script>
+  </body>
+</html>
