@@ -10,6 +10,21 @@ let editMode;
 let noteIndex;
 let notes = [];
 let todos = [];
+let updatedTime = new Date();
+const months = [{
+  0: 'January',
+  1: 'February',
+  2: 'March',
+  3: 'April',
+  4: 'May',
+  5: 'June',
+  6: 'July',
+  7: 'August',
+  8: 'September',
+  9: 'October',
+  10: 'November',
+  11: 'December'
+}]
 
 editMode = false;
 
@@ -46,11 +61,12 @@ saveBtn.addEventListener('click', () => {
 })
 
 function addNewNote(){
+  updatedTime = new Date();
   notes.push({
     id: notes.length,
     title: `${titleHeader.value}`,
     body: `${bodyHeader.value}`,
-    time: ""
+    time: `${updatedTime.getHours()}:${updatedTime.getMinutes()}, ${months[0][updatedTime.getMonth()]} ${updatedTime.getDate()}, ${updatedTime.getFullYear()}`
   })
 }
 
@@ -64,7 +80,7 @@ function displayAddedNote(){
     newNoteDiv.innerHTML = `<div class="note p-2" style="height: 100%">
     <p class="h2">${noteItem.title}</p>
     <p class="h6">${noteItem.body}</p>
-    <p>12:18, July 2, 2023</p>
+    <p>${noteItem.time}</p>
   </div>`;
     displaynotes.appendChild(newNoteDiv);
 });
@@ -95,8 +111,10 @@ function noteClick(){
             editMode = false;
           }
            else {
+            updatedTime = new Date();
             notes[noteIndex].title = titleHeader.value;
             notes[noteIndex].body = bodyHeader.value;
+            notes[noteIndex].time = `${updatedTime.getHours()}:${updatedTime.getMinutes()}, ${months[0][updatedTime.getMonth()]} ${updatedTime.getDate()}, ${updatedTime.getFullYear()}`;
             let itemToMove = notes.splice(noteIndex, 1)[0];
             notes.unshift(itemToMove);
             displayAddedNote();
