@@ -4,27 +4,30 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Notepad</title>
+    <title>Document</title>
     <link
       rel="stylesheet"
       href="bootstrap-5.3.0-alpha3-dist/css/bootstrap.css"
     />
     <link rel="stylesheet" href="style.css" />
+    <script src="https://kit.fontawesome.com/90aa049a42.js"></script>
   </head>
-  <body class="bg-dark">
+  <body>
     <div class="container-fluid all-container">
-      <div class="notepad container bg-light hide">
+      <div class="notepad container hide">
         <div
           class="control-space pt-3 d-flex justify-content-between align-items-center"
         >
           <div class="d-flex align-items-center">
             <div class="back-btn">
-              <button class="btn btn-dark back-button p-2">back</button>
+              <!-- <button class="btn btn-dark back-button p-2">back</button> -->
+              <i class="fa-solid fa-xmark back-button text-dark"></i>
             </div>
-            <p class="h4 p-2">Notes</p>
+            <!-- <p class="h4 p-2">Notes</p> -->
           </div>
           <div>
-            <button class="btn btn-dark save-btn">save</button>
+            <!-- <button class="btn btn-dark save-btn">save</button> -->
+            <i class="fa-solid fa-check save-btn text-dark"></i>
           </div>
         </div>
         <textarea
@@ -44,7 +47,7 @@
           autocomplete="off"
         ></textarea>
       </div>
-      <p class="h1">Notes</p>
+      <p class="h1 p-2">Notepad</p>
       <div class="container d-flex justify-content-center mt-3">
         <input
           type="text"
@@ -56,20 +59,35 @@
       </div>
       <div class="notes-sec row mt-4 g-3" id="notes-sec" style="height: auto">
         <!-- <div class="note-box col-xl-3 col-lg-3 col-md-3">
-          <div class="note p-2">
-            <p class="h2">Title</p>
-            <p class="h6">Lorem ipsum dolor sit, amet consectetur...</p>
-            <p>12:18, July 2, 2023</p>
+          <div class="note p-2 d-flex flex-column" style="height: 100%">
+            <div class="d-flex justify-content-between flex-column">
+              <p class="h2">Title</p>
+              <p class="h6">
+                Lorem ipsum dolor sit, amet
+                consecteturmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
+              </p>
+              <p>12:18, July 2, 2023</p>
+            </div>
+            <div class="menu-ellipse">
+              <i class="fa-solid fa-ellipsis" title="Menu"></i>
+              <button class="delete-btn hide" id="delete-btn">Delete</button>
+            </div>
           </div>
         </div> -->
       </div>
-      <div class="empty-info hide">
-        <p class="h5 text-dark">No Notes To Show</p>
+      <div class="empty-info">
+        <img
+          src="images/placeholder-img.png"
+          class="placeholder-img"
+          alt=""
+          style="height: 250px"
+        />
+        <p class="h6">Add Notes</p>
       </div>
       <div
         class="add-btn d-flex justify-content-center align-items-center bg-dark"
       >
-        +
+        <i class="fa-solid fa-plus"></i>
       </div>
     </div>
 
