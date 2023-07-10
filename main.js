@@ -192,7 +192,7 @@ function noteClick(Arr){
                   notes[notes.indexOf(i)].time = `${updatedTime.getHours()}:${updatedTime.getMinutes()}, ${months[0][updatedTime.getMonth()]} ${updatedTime.getDate()}, ${updatedTime.getFullYear()}`;
                   let itemToMove = searchNotes.splice(noteIndex, 1)[0];
                   searchNotes.unshift(itemToMove);
-                  let itemToMove2 = notes.splice(noteIndex, 1)[0];
+                  let itemToMove2 = notes.splice(notes.indexOf(i), 1)[0];
                   notes.unshift(itemToMove2);
                   displayAddedNote(searchNotes);
                   notePad.classList.add('hide');
