@@ -1,8 +1,6 @@
-
-
 .search-field {
     width: 100%;
-    background: rgba(220, 220, 220, 0.876);
+    background: rgba(220, 220, 220, 0.586);
     border: none;
     border-radius: 1rem;
     padding: 0.5rem;
@@ -24,18 +22,19 @@
     cursor: default;
 }
 
+.notes-sec{
+    margin-bottom: 5rem;
+}
+
 .note-box {
     cursor: pointer;
 }
 
 .note {
-    background: rgba(220, 220, 220, 0.876);
+    background: rgba(220, 220, 220, 0.586);
     width: 100%;
     height: auto;
     border-radius: 1rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
 }
 
 .note p {
@@ -44,11 +43,25 @@
     text-overflow: ellipsis;
 }
 
+.menu-ellipse i {
+    font-size: 1.5rem;
+    cursor: default;
+    color: #000;
+}
+
+.delete-btn {
+    outline: none;
+    background: #fff;
+    border: none;
+    /* padding: .3rem; */
+}
+
 .empty-info {
     position: absolute;
     top: 50%;
     left:50%;
     transform: translate(-50%,-50%);
+    text-align: center;
 }
 
 .hide {
@@ -61,7 +74,7 @@
     width: 100%;
     height: auto;
     padding: 1.5rem;
-    background: rgb(152, 152, 152);
+    background: rgba(220, 220, 220, 0.586);
 }
 
 .notes-tab, .todo-tab  {
@@ -69,7 +82,7 @@
 }
 
 .notes-tab a:hover, .todo-tab a:hover {
-    color: #fff;
+    text-decoration: underline;
 }
 
 .search-field-write-mode-h1, .search-field-write-mode-p {
@@ -102,4 +115,16 @@
     z-index: 6;
     position: fixed;
     overflow-y: scroll;
+    background: #fff;
+    box-shadow: 0px 0px 1rem rgb(168, 166, 166);
+}
+
+.back-button, .save-btn, .fa-plus {
+    font-size: 2.5rem;
+    cursor: pointer;
+}
+
+.fa-plus {
+    font-size: 4rem;
+    cursor: pointer;
 }
