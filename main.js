@@ -11,7 +11,9 @@ let pageBody = document.getElementsByTagName('body')[0];
 let editMode;
 let noteIndex;
 let filteredSearch;
-let notes = [];
+let notes;
+let storedNotesString;
+let updatedNotes;
 let searchNotes = [];
 let updatedTime = new Date();
 let isFilter;
@@ -30,6 +32,9 @@ const months = [{
   10: 'November',
   11: 'December'
 }]
+
+storedNotesString = localStorage.getItem('notes');
+notes = JSON.parse(storedNotesString);
 
 editMode = false;
 
@@ -73,7 +78,9 @@ function addNewNote(){
     title: `${titleHeader.value}`,
     body: `${bodyHeader.value}`,
     time: `${updatedTime.getHours()}:${updatedTime.getMinutes()}, ${months[0][updatedTime.getMonth()]} ${updatedTime.getDate()}, ${updatedTime.getFullYear()}`
-  })
+  });
+  updatedNotes = JSON.stringify(notes);
+  localStorage.setItem('notes', updatedNotes);
 }
 
 function displayAddedNote(Arr){
@@ -92,7 +99,7 @@ function displayAddedNote(Arr){
       <p>${noteItem.time}</p>
     </div>
     <div class="menu-ellipse">
-      <i class="fa-solid fa-ellipsis" id="fa-ellipsis" title="Menu"></i>
+      <i class="fa-solid fa-ellipsis" id="fa-ellipsis"></i>
       <button class="delete-btn hide" id="delete-btn">Delete</button>
     </div>
   </div>`;
@@ -102,78 +109,95 @@ noteClick(Arr);
 checkEmptyNotes();
 }
 
+storedNotesString = localStorage.getItem('notes');
+notes = JSON.parse(storedNotesString);
+displayAddedNote(notes);
+
 function noteClick(Arr){
   document.querySelectorAll('.note-box').forEach(item => {
     item.addEventListener('click', (event) => {
       let noteArray = Array.from(item.parentNode.children);
       noteIndex = noteArray.indexOf(item);
-      let deleteBtnArray = Array.from(document.querySelectorAll('.delete-btn'));
-      let menuArray = Array.from(document.querySelectorAll('.fa-ellipsis'));
-      let clickedIndex = menuArray.indexOf(event.target);
-      if(event.target.id !== 'fa-ellipsis'){
-        editMode = true;
-        console.log(Arr[noteArray.indexOf(item)]);
-        // noteIndex = noteArray.indexOf(item);
-        titleHeader.value = Arr[noteIndex].title;
-        bodyHeader.value = Arr[noteIndex].body;
-        notePad.classList.remove('hide');
-      } 
-      else {
-          deleteBtnArray[clickedIndex].classList.toggle('hide');
+      if(event.target.id === 'fa-ellipsis'){
+        let deleteBtnArray = Array.from(document.querySelectorAll('.delete-btn'));
+        let menuArray = Array.from(document.querySelectorAll('.fa-ellipsis'));
+        let clickedIndex = menuArray.indexOf(event.target);
+        deleteBtnArray[clickedIndex].classList.toggle('hide');
           let filteredDelete = deleteBtnArray.filter((element) => {
             return element !== deleteBtnArray[clickedIndex];
         })
         filteredDelete.forEach(del => {
           del.classList.add('hide')
         });
-          deleteBtnArray[clickedIndex].addEventListener('click', () => {
-            if(Arr == notes){
-              Arr.splice(clickedIndex, 1)
-              displayAddedNote(Arr)
-            } else if(Arr == searchNotes){
+      } 
+      else  if(event.target.id === 'delete-btn'){
+        let deleteBtnArray = Array.from(document.querySelectorAll('.delete-btn'));
+        let clickedIndex = deleteBtnArray.indexOf(event.target);
+            storedNotesString = localStorage.getItem('notes');
+            notes = JSON.parse(storedNotesString);
+            if(!isFilter){
+              notes.splice(clickedIndex, 1);
+              updatedNotes = JSON.stringify(notes);
+              localStorage.setItem('notes', updatedNotes);
+              displayAddedNote(notes)
+            } else if(isFilter){
               for(let i of notes){
                 if(i.id == Arr[clickedIndex].id){
                   notes.splice(notes.indexOf(i), 1);
+                  updatedNotes = JSON.stringify(notes);
+                  localStorage.setItem('notes', updatedNotes);
+                  Arr.splice(clickedIndex, 1)
+                  displayAddedNote(Arr);
+                  editMode = false;
                   break;
                 }
               }
-              Arr.splice(clickedIndex, 1)
-              displayAddedNote(Arr)
             }
-          })
-          editMode = false;
+      } else {
+        editMode = true;
+        titleHeader.value = Arr[noteIndex].title;
+        bodyHeader.value = Arr[noteIndex].body;
+        notePad.classList.remove('hide');
       }
 
       saveBtn.addEventListener('click', () => {
+        storedNotesString = localStorage.getItem('notes');
+        notes = JSON.parse(storedNotesString);
         if(editMode === true){
           if(!isFilter){
             if(titleHeader.value == "" && bodyHeader.value == ""){
-              Arr.splice(noteIndex, 1);
-              displayAddedNote(Arr);
+              notes.splice(noteIndex, 1);
+              updatedNotes = JSON.stringify(notes);
+              localStorage.setItem('notes', updatedNotes);
+              displayAddedNote(notes);
               notePad.classList.add('hide');
               editMode = false;
-            }else if(titleHeader.value === Arr[noteIndex].title && bodyHeader.value === Arr[noteIndex].body){
+            }else if(titleHeader.value === notes[noteIndex].title && bodyHeader.value === notes[noteIndex].body){
               notePad.classList.add('hide');
               editMode = false;
             }else {
               updatedTime = new Date();
-              Arr[noteIndex].title = titleHeader.value;
-              Arr[noteIndex].body = bodyHeader.value;
-              Arr[noteIndex].time = `${updatedTime.getHours()}:${updatedTime.getMinutes()}, ${months[0][updatedTime.getMonth()]} ${updatedTime.getDate()}, ${updatedTime.getFullYear()}`;
-              let itemToMove = Arr.splice(noteIndex, 1)[0];
-              Arr.unshift(itemToMove);
-              displayAddedNote(Arr);
+              notes[noteIndex].title = titleHeader.value;
+              notes[noteIndex].body = bodyHeader.value;
+              notes[noteIndex].time = `${updatedTime.getHours()}:${updatedTime.getMinutes()}, ${months[0][updatedTime.getMonth()]} ${updatedTime.getDate()}, ${updatedTime.getFullYear()}`;
+              let itemToMove = notes.splice(noteIndex, 1)[0];
+              notes.unshift(itemToMove);
+              updatedNotes = JSON.stringify(notes);
+              localStorage.setItem('notes', updatedNotes);
+              displayAddedNote(notes);
               notePad.classList.add('hide');
               editMode = false;
             }
           } 
-          if (isFilter){
+          else if (isFilter){
             console.log('noooooo');
             for(let i of notes){
               if(i.id == searchNotes[noteIndex].id){
                 if(titleHeader.value == "" && bodyHeader.value == ""){
                   searchNotes.splice(noteIndex, 1);
                   notes.splice(notes.indexOf(i), 1)
+                  updatedNotes = JSON.stringify(notes);
+                  localStorage.setItem('notes', updatedNotes);
                   displayAddedNote(searchNotes);
                   notePad.classList.add('hide');
                   editMode = false;
@@ -194,6 +218,8 @@ function noteClick(Arr){
                   searchNotes.unshift(itemToMove);
                   let itemToMove2 = notes.splice(notes.indexOf(i), 1)[0];
                   notes.unshift(itemToMove2);
+                  updatedNotes = JSON.stringify(notes);
+                  localStorage.setItem('notes', updatedNotes);
                   displayAddedNote(searchNotes);
                   notePad.classList.add('hide');
                   editMode = false;
@@ -209,6 +235,8 @@ function noteClick(Arr){
 }
 
 function checkEmptyNotes(){
+  storedNotesString = localStorage.getItem('notes');
+  notes = JSON.parse(storedNotesString);
   let placeholderImg = document.querySelector('.empty-info');
   if(notes.length == 0){
     placeholderImg.classList.remove('hide')
@@ -219,18 +247,20 @@ function checkEmptyNotes(){
 }
 
 function checkKeyPressed(event){
+  storedNotesString = localStorage.getItem('notes');
+  notes = JSON.parse(storedNotesString);
   if(event.keyCode){
+    addBtn.classList.add('dontShow');
     searchNotes.splice(0, searchNotes.length)
       const target = searchBox.value;
       isFilter = true;
-  
-        console.log('yes');
+
         filteredSearch = notes.filter(item => (item.title.includes(target) && item.body.includes(target)) || (item.title.includes(target) || item.body.includes(target)))
         searchNotes = searchNotes.concat(filteredSearch);
         displayAddedNote(searchNotes);
 
       if(target.length == 0){
-        console.log('no');
+        addBtn.classList.remove('dontShow');
         displayAddedNote(notes);
         isFilter = false;
       }
