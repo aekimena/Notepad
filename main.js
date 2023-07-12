@@ -8,10 +8,12 @@ let searchBox = document.getElementById('search-field');
 let displaynotes = document.querySelector('.notes-sec');
 let displaynotesItems = document.querySelectorAll('.note-box');
 let pageBody = document.getElementsByTagName('body')[0];
+let placeholderImg = document.querySelector('.empty-info');
+let inputFields = document.querySelectorAll('input');
 let editMode;
 let noteIndex;
 let filteredSearch;
-let notes;
+let notes = [];
 let storedNotesString;
 let updatedNotes;
 let searchNotes = [];
@@ -33,17 +35,50 @@ const months = [{
   11: 'December'
 }]
 
-storedNotesString = localStorage.getItem('notes');
-notes = JSON.parse(storedNotesString);
+window.addEventListener('DOMContentLoaded', () => {
+  if(localStorage.getItem('notes')){
+    storedNotesString = localStorage.getItem('notes');
+    notes = JSON.parse(storedNotesString);
+    displayAddedNote(notes);
+  } else {
+    null
+  }
+});
+
+inputFields.forEach(input => {
+  input.addEventListener('focus', (event) => {
+    let inputClick = event.target;
+    inputClick.scrollIntoView({behaviour: 'smooth', block: 'center'})
+  })
+})
 
 editMode = false;
 
 
 function search(){
   searchBox.addEventListener('focus', () => {
+    placeholderImg.classList.add('hide');
+    addBtn.classList.add('dontShow');
     document.addEventListener('keyup', checkKeyPressed)
   });
+
+  searchBox.addEventListener('blur', () => {
+    if(localStorage.getItem('notes')){
+      storedNotesString = localStorage.getItem('notes');
+      notes = JSON.parse(storedNotesString);
+      if(notes.length == 0){
+        placeholderImg.classList.remove('hide');
+      }
+    } else {
+      placeholderImg.classList.remove('hide');
+    }
+
+    if(searchBox.value == ""){
+      addBtn.classList.remove('dontShow');
+    }
+  })
 }
+
 search();
 
 addBtn.addEventListener('click', () => {
@@ -65,7 +100,7 @@ saveBtn.addEventListener('click', () => {
     } 
      else {
       addNewNote();
-      displayAddedNote(notes);
+      // displayAddedNote(notes);
       notePad.classList.add('hide');
     }
   }
@@ -81,6 +116,9 @@ function addNewNote(){
   });
   updatedNotes = JSON.stringify(notes);
   localStorage.setItem('notes', updatedNotes);
+  storedNotesString = localStorage.getItem('notes');
+  notes = JSON.parse(storedNotesString);
+  displayAddedNote(notes);
 }
 
 function displayAddedNote(Arr){
@@ -109,9 +147,7 @@ noteClick(Arr);
 checkEmptyNotes();
 }
 
-storedNotesString = localStorage.getItem('notes');
-notes = JSON.parse(storedNotesString);
-displayAddedNote(notes);
+// displayAddedNote(notes);
 
 function noteClick(Arr){
   document.querySelectorAll('.note-box').forEach(item => {
@@ -237,7 +273,7 @@ function noteClick(Arr){
 function checkEmptyNotes(){
   storedNotesString = localStorage.getItem('notes');
   notes = JSON.parse(storedNotesString);
-  let placeholderImg = document.querySelector('.empty-info');
+  // let placeholderImg = document.querySelector('.empty-info');
   if(notes.length == 0){
     placeholderImg.classList.remove('hide')
   }
@@ -247,22 +283,26 @@ function checkEmptyNotes(){
 }
 
 function checkKeyPressed(event){
-  storedNotesString = localStorage.getItem('notes');
-  notes = JSON.parse(storedNotesString);
-  if(event.keyCode){
-    addBtn.classList.add('dontShow');
-    searchNotes.splice(0, searchNotes.length)
-      const target = searchBox.value;
-      isFilter = true;
-
-        filteredSearch = notes.filter(item => (item.title.includes(target) && item.body.includes(target)) || (item.title.includes(target) || item.body.includes(target)))
-        searchNotes = searchNotes.concat(filteredSearch);
-        displayAddedNote(searchNotes);
-
-      if(target.length == 0){
-        addBtn.classList.remove('dontShow');
-        displayAddedNote(notes);
-        isFilter = false;
-      }
+  if(localStorage.getItem('notes')){
+    storedNotesString = localStorage.getItem('notes');
+    notes = JSON.parse(storedNotesString);
+    if(event.keyCode){
+      addBtn.classList.add('dontShow');
+      searchNotes.splice(0, searchNotes.length)
+        const target = searchBox.value;
+        isFilter = true;
+  
+          filteredSearch = notes.filter(item => (item.title.includes(target) && item.body.includes(target)) || (item.title.includes(target) || item.body.includes(target)))
+          searchNotes = searchNotes.concat(filteredSearch);
+          displayAddedNote(searchNotes);
+  
+        if(target.length == 0){
+          addBtn.classList.remove('dontShow');
+          displayAddedNote(notes);
+          isFilter = false;
+        }
+    }
+  } else {
+    null
   }
 }
