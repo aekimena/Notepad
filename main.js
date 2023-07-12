@@ -295,6 +295,7 @@ function checkKeyPressed(event){
           filteredSearch = notes.filter(item => (item.title.includes(target) && item.body.includes(target)) || (item.title.includes(target) || item.body.includes(target)))
           searchNotes = searchNotes.concat(filteredSearch);
           displayAddedNote(searchNotes);
+          placeholderImg.classList.add('hide');
   
         if(target.length == 0){
           addBtn.classList.remove('dontShow');
@@ -303,6 +304,6 @@ function checkKeyPressed(event){
         }
     }
   } else {
-    null
+    
   }
 }
