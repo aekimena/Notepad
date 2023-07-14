@@ -63,6 +63,7 @@ function search(){
   });
 
   searchBox.addEventListener('blur', () => {
+    addBtn.classList.remove('dontShow');
     if(localStorage.getItem('notes')){
       storedNotesString = localStorage.getItem('notes');
       notes = JSON.parse(storedNotesString);
@@ -108,12 +109,14 @@ saveBtn.addEventListener('click', () => {
 
 function addNewNote(){
   updatedTime = new Date();
-  notes.push({
+  let newNote = {
     id: notes.length,
     title: `${titleHeader.value}`,
     body: `${bodyHeader.value}`,
     time: `${updatedTime.getHours()}:${updatedTime.getMinutes()}, ${months[0][updatedTime.getMonth()]} ${updatedTime.getDate()}, ${updatedTime.getFullYear()}`
-  });
+  }
+  notes.push(newNote);
+  notes.unshift(notes.splice(notes.indexOf(newNote), 1)[0]);
   updatedNotes = JSON.stringify(notes);
   localStorage.setItem('notes', updatedNotes);
   storedNotesString = localStorage.getItem('notes');
@@ -289,17 +292,18 @@ function checkKeyPressed(event){
     if(event.keyCode){
       addBtn.classList.add('dontShow');
       searchNotes.splice(0, searchNotes.length)
-        const target = searchBox.value;
+        const target = searchBox.value.toLowerCase();
         isFilter = true;
   
-          filteredSearch = notes.filter(item => (item.title.includes(target) && item.body.includes(target)) || (item.title.includes(target) || item.body.includes(target)))
+          filteredSearch = notes.filter(item => (item.title.toLowerCase().includes(target) && item.body.toLowerCase().includes(target)) || (item.title.toLowerCase().includes(target) || item.body.toLowerCase().includes(target)))
           searchNotes = searchNotes.concat(filteredSearch);
           displayAddedNote(searchNotes);
           placeholderImg.classList.add('hide');
   
         if(target.length == 0){
-          addBtn.classList.remove('dontShow');
+          // addBtn.classList.remove('dontShow');
           displayAddedNote(notes);
+          placeholderImg.classList.add('hide');
           isFilter = false;
         }
     }
