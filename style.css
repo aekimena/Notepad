@@ -112,7 +112,7 @@
     border: none;
     /* padding: 0.5rem; */
     color: #000;
-    /* outline: none; */
+    outline: none;
     resize: none;
     box-sizing: border-box;
 }
