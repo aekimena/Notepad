@@ -301,7 +301,7 @@ function checkKeyPressed(event){
           placeholderImg.classList.add('hide');
   
         if(target.length == 0){
-          // addBtn.classList.remove('dontShow');
+          addBtn.classList.remove('dontShow');
           displayAddedNote(notes);
           placeholderImg.classList.add('hide');
           isFilter = false;
