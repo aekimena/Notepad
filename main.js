@@ -54,6 +54,31 @@ inputFields.forEach(input => {
 
 editMode = false;
 
+function generateId(){
+  let values = [0,1,2,3,4,5,6,7,8,9, 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
+ 
+  for(let i = values.length - 1; i > 0; i--){
+      const j = Math.floor(Math.random() * (i + 1));
+      [values[i], values[j]] = [values[j], values[i]];
+  }
+
+  let selectedValues = values.slice(0, 20);
+  let uniqueId = selectedValues.join('');
+
+  return uniqueId;
+}
+
+function checkDuplicate(){
+  let idExists = notes.some(obj => obj.id === generateId);
+  if(idExists){
+    let newId;
+    do {
+      newId = generateId();
+    } while (notes.some(obj => obj.id === newId));
+    return newId;
+  }
+  return generateId();
+}
 
 function search(){
   searchBox.addEventListener('focus', () => {
@@ -110,7 +135,7 @@ saveBtn.addEventListener('click', () => {
 function addNewNote(){
   updatedTime = new Date();
   let newNote = {
-    id: notes.length,
+    id: checkDuplicate(),
     title: `${titleHeader.value}`,
     body: `${bodyHeader.value}`,
     time: `${updatedTime.getHours()}:${updatedTime.getMinutes()}, ${months[0][updatedTime.getMonth()]} ${updatedTime.getDate()}, ${updatedTime.getFullYear()}`
