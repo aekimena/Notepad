@@ -45,15 +45,7 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-inputFields.forEach(input => {
-  input.addEventListener('focus', (event) => {
-    let inputClick = event.target;
-    inputClick.scrollIntoView({behaviour: 'smooth', block: 'center'})
-  })
-})
-
 editMode = false;
-
 
 function generateId(){
   let values = [0,1,2,3,4,5,6,7,8,9, 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
@@ -80,6 +72,7 @@ function generateUniqueId(){
   }
   return generateId();
 }
+
 
 function search(){
   searchBox.addEventListener('focus', () => {
@@ -133,13 +126,26 @@ saveBtn.addEventListener('click', () => {
   }
 })
 
+let correctTime = () => {
+  switch (true) {
+    case updatedTime.getMinutes() < 10:
+      return `${updatedTime.getHours()}:0${updatedTime.getMinutes()}, ${months[0][updatedTime.getMonth()]} ${updatedTime.getDate()}, ${updatedTime.getFullYear()}`
+    case updatedTime.getHours() < 10:
+      return `0${updatedTime.getHours()}:${updatedTime.getMinutes()}, ${months[0][updatedTime.getMonth()]} ${updatedTime.getDate()}, ${updatedTime.getFullYear()}`  
+    case updatedTime.getHours() < 10 && updatedTime.getMinutes() < 10:
+      return `0${updatedTime.getHours()}:0${updatedTime.getMinutes()}, ${months[0][updatedTime.getMonth()]} ${updatedTime.getDate()}, ${updatedTime.getFullYear()}`
+    default:
+      return `${updatedTime.getHours()}:${updatedTime.getMinutes()}, ${months[0][updatedTime.getMonth()]} ${updatedTime.getDate()}, ${updatedTime.getFullYear()}`
+  }
+}
+
 function addNewNote(){
   updatedTime = new Date();
   let newNote = {
     id: generateUniqueId(),
     title: `${titleHeader.value}`,
     body: `${bodyHeader.value}`,
-    time: `${updatedTime.getHours()}:${updatedTime.getMinutes()}, ${months[0][updatedTime.getMonth()]} ${updatedTime.getDate()}, ${updatedTime.getFullYear()}`
+    time: correctTime()
   }
   notes.push(newNote);
   notes.unshift(notes.splice(notes.indexOf(newNote), 1)[0]);
@@ -250,7 +256,7 @@ function noteClick(Arr){
               updatedTime = new Date();
               notes[noteIndex].title = titleHeader.value;
               notes[noteIndex].body = bodyHeader.value;
-              notes[noteIndex].time = `${updatedTime.getHours()}:${updatedTime.getMinutes()}, ${months[0][updatedTime.getMonth()]} ${updatedTime.getDate()}, ${updatedTime.getFullYear()}`;
+              notes[noteIndex].time = correctTime();
               let itemToMove = notes.splice(noteIndex, 1)[0];
               notes.unshift(itemToMove);
               updatedNotes = JSON.stringify(notes);
@@ -281,10 +287,10 @@ function noteClick(Arr){
                   updatedTime = new Date();
                   searchNotes[noteIndex].title = titleHeader.value;
                   searchNotes[noteIndex].body = bodyHeader.value;
-                  searchNotes[noteIndex].time = `${updatedTime.getHours()}:${updatedTime.getMinutes()}, ${months[0][updatedTime.getMonth()]} ${updatedTime.getDate()}, ${updatedTime.getFullYear()}`;
+                  searchNotes[noteIndex].time = correctTime();
                   notes[notes.indexOf(i)].title = titleHeader.value;
                   notes[notes.indexOf(i)].body = bodyHeader.value;
-                  notes[notes.indexOf(i)].time = `${updatedTime.getHours()}:${updatedTime.getMinutes()}, ${months[0][updatedTime.getMonth()]} ${updatedTime.getDate()}, ${updatedTime.getFullYear()}`;
+                  notes[notes.indexOf(i)].time = correctTime();
                   let itemToMove = searchNotes.splice(noteIndex, 1)[0];
                   searchNotes.unshift(itemToMove);
                   let itemToMove2 = notes.splice(notes.indexOf(i), 1)[0];
@@ -340,6 +346,6 @@ function checkKeyPressed(event){
         }
     }
   } else {
-    
+    null
   }
 }
