@@ -54,6 +54,7 @@ inputFields.forEach(input => {
 
 editMode = false;
 
+
 function generateId(){
   let values = [0,1,2,3,4,5,6,7,8,9, 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
  
@@ -62,20 +63,20 @@ function generateId(){
       [values[i], values[j]] = [values[j], values[i]];
   }
 
-  let selectedValues = values.slice(0, 20);
-  let uniqueId = selectedValues.join('');
+  let selectedValues = values.slice(0, 15);
+  let id = selectedValues.join('');
 
-  return uniqueId;
+  return id;
 }
 
-function checkDuplicate(){
+function generateUniqueId(){
   let idExists = notes.some(obj => obj.id === generateId);
   if(idExists){
-    let newId;
+    let uniqueId;
     do {
-      newId = generateId();
-    } while (notes.some(obj => obj.id === newId));
-    return newId;
+      uniqueId = generateId();
+    } while (notes.some(obj => obj.id === uniqueId));
+    return uniqueId;
   }
   return generateId();
 }
@@ -135,7 +136,7 @@ saveBtn.addEventListener('click', () => {
 function addNewNote(){
   updatedTime = new Date();
   let newNote = {
-    id: checkDuplicate(),
+    id: generateUniqueId(),
     title: `${titleHeader.value}`,
     body: `${bodyHeader.value}`,
     time: `${updatedTime.getHours()}:${updatedTime.getMinutes()}, ${months[0][updatedTime.getMonth()]} ${updatedTime.getDate()}, ${updatedTime.getFullYear()}`
@@ -193,6 +194,12 @@ function noteClick(Arr){
         filteredDelete.forEach(del => {
           del.classList.add('hide')
         });
+
+        document.addEventListener('click', (event) => {
+          if(event.target.id !== 'fa-ellipsis' && event.target.id !== 'delete-btn'){
+            deleteBtnArray[clickedIndex].classList.add('hide');
+          }
+        })
       } 
       else  if(event.target.id === 'delete-btn'){
         let deleteBtnArray = Array.from(document.querySelectorAll('.delete-btn'));
